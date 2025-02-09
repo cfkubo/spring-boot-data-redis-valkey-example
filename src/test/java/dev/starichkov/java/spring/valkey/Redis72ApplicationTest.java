@@ -1,24 +1,16 @@
 package dev.starichkov.java.spring.valkey;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@ActiveProfiles("test")
-@SpringBootTest
-@Testcontainers
-@Slf4j
-class Redis72aIT {
+/**
+ * @author Vadim Starichkov (starichkovva@gmail.com)
+ * @since 09.02.2025 18:57
+ */
+class Redis72ApplicationTest extends BaseApplicationTest {
 
     @Container
     private static final GenericContainer<?> REDIS_7_2 =
@@ -31,30 +23,8 @@ class Redis72aIT {
         registry.add("spring.data.redis.port", () -> REDIS_7_2.getMappedPort(6379).toString());
     }
 
-    @Autowired
-    private SampleServiceWithCaching sampleService;
-
-    @Test
-    void testCaching() {
-        var key = "redis72testKey";
-
-        var value1 = getValue(key);
-        var value2 = getValue(key);
-        assertEquals(value1, value2);
-
-        deleteValue(key);
-
-        var value3 = getValue(key);
-        assertNotEquals(value1, value3);
-    }
-
-    private String getValue(String key) {
-        log.info("Test: Requesting value for key '{}'", key);
-        return sampleService.getValue(key);
-    }
-
-    private void deleteValue(String key) {
-        log.info("Test: Deleting value for key '{}'", key);
-        sampleService.deleteValue(key);
+    @Override
+    protected String getKey() {
+        return "redis72testKey";
     }
 }

@@ -1,1 +1,9 @@
-spring.application.name=spring-boot-data-redis-valkey-example
+spring:
+  application:
+    name: spring-boot-data-redis-valkey-example
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
