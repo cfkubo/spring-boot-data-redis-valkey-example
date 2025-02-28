@@ -7,3 +7,9 @@ spring:
     redis:
       host: localhost
       port: 6379
+  actuator:
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: "*"
