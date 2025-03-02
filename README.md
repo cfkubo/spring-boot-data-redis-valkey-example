@@ -79,6 +79,8 @@ Replace `{key}` with the actual key you want to delete.
 curl -X GET http://localhost:8080/movies
 ```
 
+![Project Screenshot](static/redis-valkey.png)
+
 ## Docker Containers
 
 ### Redis
