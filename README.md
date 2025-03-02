@@ -30,6 +30,20 @@ This project demonstrates the use of Spring Boot with Spring Data Redis and Valk
    - `DELETE /sample/{key}`: Deletes the cached value for the given key.
 3. **Integration with Valkey**: The project includes test classes to verify the integration with different versions of Redis and Valkey using Testcontainers.
 
+### Valkey and Redis Commander
+##### Create a docker network
+```
+docker network create valkey-net
+```
+##### Run valkey docker image on same netowrk
+```
+docker run -d --name valkey80a  --network=valkey-net   -p 6379:6379  valkey/valkey:8.0.2-alpine3.21
+```
+##### Run redis commander on same netowrk
+```
+docker run -d -p 8081:8081 --name redis-commander --network valkey-net -e REDIS_HOSTS=local:valkey80a:6379 rediscommander/redis-commander
+```
+
 
 ## Building and Running the Project
 
@@ -60,18 +74,9 @@ curl -X DELETE http://localhost:8080/sample/{key}
 
 Replace `{key}` with the actual key you want to delete.
 
-### Valkey and Redis Commander
-##### Create a docker network
+### Query movies dataset
 ```
-docker network create valkey-net
-```
-##### Run valkey docker image on same netowrk
-```
-docker run -d --name valkey80a  --network=valkey-net   -p 6379:6379  valkey/valkey:8.0.2-alpine3.21
-```
-##### Run redis commander on same netowrk
-```
-docker run -d -p 8081:8081 --name redis-commander --network valkey-net -e REDIS_HOSTS=local:valkey80a:6379 rediscommander/redis-commander
+curl -X GET http://localhost:8080/movies
 ```
 
 ## Docker Containers
